@@ -7,19 +7,19 @@ import (
 )
 
 type Result struct {
-	URL string
-	StatusCode int
+	URL          string
+	StatusCode   int
 	ResponseTime time.Duration
-	Up bool
-	Error error
-	CheckedAt	time.Time
+	Up           bool
+	Error        error
+	CheckedAt    time.Time
 }
 
 func check(ctx context.Context, client *http.Client, url string) Result {
 	start := time.Now()
 
-	result:= Result{
-		URL: url,
+	result := Result{
+		URL:       url,
 		CheckedAt: start,
 	}
 
@@ -36,23 +36,16 @@ func check(ctx context.Context, client *http.Client, url string) Result {
 		result.Error = err
 		return result
 	}
-	defer resp.Body.Close()
+
+	defer func() {
+		// We don't want to overwrite the result error
+		if closeErr := resp.Body.Close(); closeErr != nil && result.Error == nil {
+			result.Error = closeErr
+		}
+	}()
 
 	result.StatusCode = resp.StatusCode
 	result.Up = resp.StatusCode >= 200 && resp.StatusCode < 400
 
 	return result
 }
-
-/*
-
-func C
-	defer resp.Body.Close()
-
-	result.StatusCode = resp.StatusCode
-	result.Up = resp.StatusCode >= 200 && resp.StatusCode < 400
-
-	return result
-}
-
-*/
