@@ -15,7 +15,7 @@ type Result struct {
 	CheckedAt    time.Time
 }
 
-func check(ctx context.Context, client *http.Client, url string) Result {
+func Check(ctx context.Context, client *http.Client, url string) Result {
 	start := time.Now()
 
 	result := Result{
@@ -48,4 +48,5 @@ func check(ctx context.Context, client *http.Client, url string) Result {
 	result.Up = resp.StatusCode >= 200 && resp.StatusCode < 400
 
 	return result
+
 }
