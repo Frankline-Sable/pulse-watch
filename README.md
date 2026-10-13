@@ -8,3 +8,9 @@ status codes and response times.
 
 we separate application entry point from the monitoring logic so that later we can reuse the monitoring package in an
 API server or background worker.
+
+
+### Worker pool.
+At this point our app was handling one go routine for every website, which is not ideal as the number of websites grows.
+We implement a worker pool to handle this issue, as it uses a fixed number of go routines to process jobs from a shared 
+channel
