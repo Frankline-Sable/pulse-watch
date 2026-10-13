@@ -14,3 +14,12 @@ API server or background worker.
 At this point our app was handling one go routine for every website, which is not ideal as the number of websites grows.
 We implement a worker pool to handle this issue, as it uses a fixed number of go routines to process jobs from a shared 
 channel
+
+
+### Automated Testing
+Here we are introducing testing 5 scenarious:
+    Website returns 200
+    Website returns 503
+    Website is unreachable
+    Website take too long
+    Multiple websites.
