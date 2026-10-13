@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"sync"
 	"time"
 
 	"github.com/Frankline-Sable/pulse-watch/internal/monitor"
@@ -22,7 +21,7 @@ func main() {
 		Timeout: 5 * time.Second,
 	}
 
-	results := make(chan monitor.Result, len(websites))
+	/*results := make(chan monitor.Result, len(websites))
 
 	var wg sync.WaitGroup
 
@@ -44,9 +43,13 @@ func main() {
 	go func() {
 		wg.Wait()
 		close(results)
-	}()
+	}()*/
+	results := monitor.CheckAll(
+		context.Background(),
+		client,
+		websites, 3)
 
-	for result := range results {
+	for _, result := range results {
 		if result.Error != nil {
 			fmt.Printf(
 				"DOWN | %s | Error: %v\n",

@@ -23,6 +23,7 @@ func Check(ctx context.Context, client *http.Client, url string) Result {
 		CheckedAt: start,
 	}
 
+
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 
 	if err != nil {
